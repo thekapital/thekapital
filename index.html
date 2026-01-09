@@ -222,58 +222,81 @@
     </section>
 
     <div class="tabs-content" id="blog">
-        <div class="container">
-            <div class="row">
-                <div class="wrapper">
-                    <div class="col-md-4">
-                        <div class="section-heading">
-                            <h4>Insights & Opportunities</h4>
-                            <div class="line-dec"></div>
-                            <p>Strategic Intelligence to Optimize Your Capital and Growth.</p>
-                            <ul class="tabs clearfix" data-tabgroup="first-tab-group">
-                                <li><a href="#tab1" class="active">Business Expansion Capital</a></li>
-                                <li><a href="#tab2">Commercial Property Acquisition</a></li>
-                                <li><a href="#tab3">Working Capital & Cash Flow Solutions</a></li>
-                                <li><a href="#tab4">Asset & Equipment Finance</a></li>
-                            </ul>
+    <div class="container">
+        <div class="row">
+            <div class="wrapper">
+                <div class="col-md-4">
+                    <div class="section-heading">
+                        <h4>Financial Intelligence</h4>
+                        <div class="line-dec"></div>
+                        <p>Strategic Tools to Optimize Your Capital and Growth.</p>
+                        <ul class="tabs clearfix" data-tabgroup="first-tab-group">
+                            <li><a href="#tab1" class="active">Mortgage Repayment</a></li>
+                            <li><a href="#tab2">Stamp Duty (NSW)</a></li>
+                            <li><a href="#tab3">Investment Growth</a></li>
+                            <li><a href="#tab4">Borrowing Capacity</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <section id="first-tab-group" class="tabgroup">
+                        <div id="tab1">
+                            <div class="kapital-calc-container">
+                                <h4>Mortgage Repayment Calculator</h4>
+                                <div class="calc-row">
+                                    <div class="calc-input-group">
+                                        <label>Loan Amount ($)</label>
+                                        <input type="number" id="loanAmount" value="750000" step="10000">
+                                    </div>
+                                    <div class="calc-input-group">
+                                        <label>Interest Rate (% p.a.)</label>
+                                        <input type="number" id="interestRate" value="6.14" step="0.01">
+                                    </div>
+                                </div>
+                                <div class="calc-row">
+                                    <div class="calc-input-group">
+                                        <label>Term (Years)</label>
+                                        <select id="loanTerm">
+                                            <option value="30">30 Years</option>
+                                            <option value="25">25 Years</option>
+                                            <option value="20">20 Years</option>
+                                        </select>
+                                    </div>
+                                    <div class="calc-input-group">
+                                        <label>Frequency</label>
+                                        <select id="frequency">
+                                            <option value="12">Monthly</option>
+                                            <option value="26">Fortnightly</option>
+                                            <option value="52">Weekly</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="calc-result-box">
+                                    <span class="res-title">Estimated Repayment</span>
+                                    <h2 id="displayPayment">$0</h2>
+                                    <div class="res-details">
+                                        <span>Total Interest: <strong id="totalInterest">$0</strong></span>
+                                        <span>Total Payable: <strong id="totalPayable">$0</strong></span>
+                                    </div>
+                                    <div class="primary-blue-button">
+                                        <a href="#contact" class="scroll-link" data-id="contact">Speak to a Specialist</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-8">
-                        <section id="first-tab-group" class="tabgroup">
-                            <div id="tab1">
-                                <img src="img/blog_item_01.jpg" alt="">
-                                <div class="text-content">
-                                    <h4>Scaling for Success</h4>
-                                    <p>Scaling a business in today’s landscape requires more than just cash—it requires a strategic capital structure. We dive deep into how you can leverage smart lending to expand your operations, hire top-tier talent, or enter new markets without depleting your essential cash reserves. At The Kapital, we bridge the gap between your current position and your ultimate corporate ambition.</p>                                </div>
-                            </div>
-                            <div id="tab2">
-                                <img src="img/blog_item_02.jpg" alt="">
-                                <div class="text-content">
-                                    <h4>Securing Your Strategic Footprint</h4>
-                                    <p>Whether you are looking to purchase your first warehouse, upsize your office space, or invest in retail assets, navigating Sydney’s commercial lending is complex. We analyze LVR requirements, lease-doc options, and interest-only structures to find the facility that fits your business model. Own your premises and turn your rent expense into a long-term capital asset.</p>
-                                </div>
-                            </div>
-                            <div id="tab3">
-                                <img src="img/blog_item_03.jpg" alt="">
-                                <div class="text-content">
-                                    <h4>Maintaining Financial Agility</h4>
-                                    <p>Cash flow is the lifeblood of any successful enterprise. We explore sophisticated finance solutions—from revolving lines of credit to invoice discounting—that ensure you have the liquidity to seize unexpected opportunities. Learn how to manage seasonal fluctuations and trade cycles with the agility of a market leader, backed by The Kapital’s expert structuring.</p>
-                                </div>
-                            </div>
-                            <div id="tab4">
-                                <img src="img/blog_item_04.jpg" alt="">
-                                <div class="text-content">
-                                    <h4>Investing in Future Productivity</h4>
-                                    <p>Don't let outdated technology or machinery hold your business back. We break down the tax-effective ways to finance high-value assets, from medical equipment to logistics fleets. By choosing the right hire-purchase or chattel mortgage structure, you can preserve your capital while equipping your team with the tools needed to dominate your industry.</p>
-                                </div>
-                            </div>
+                        
+                        <div id="tab2">
+                             <div class="text-content">
+                                <h4>Coming Soon: Stamp Duty Calculator</h4>
+                                <p>We are integrating the latest NSW Revenue data to provide precise stamp duty estimates for your next acquisition.</p>
+                             </div>
+                        </div>
                         </section>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
     <div id="contact-us">
         <div class="container">
             <div class="row">

@@ -97,5 +97,47 @@ jQuery(document).ready(function($) {
         });
 
 
+function runTheKapitalCalc() {
+    const pInput = document.getElementById('loanAmount');
+    const rInput = document.getElementById('interestRate');
+    const tInput = document.getElementById('loanTerm');
+    const fInput = document.getElementById('frequency');
+    const dPayment = document.getElementById('displayPayment');
+
+    if (!pInput || !dPayment) return; // Sayfada element yoksa hata verme
+
+    function update() {
+        const P = parseFloat(pInput.value);
+        const annualR = parseFloat(rInput.value) / 100;
+        const years = parseFloat(tInput.value);
+        const freq = parseFloat(fInput.value);
+
+        const r = annualR / freq;
+        const n = years * freq;
+
+        if (P > 0 && r > 0 && n > 0) {
+            const m = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+            const total = m * n;
+            
+            dPayment.innerText = "$" + Math.round(m).toLocaleString('en-AU');
+            if(document.getElementById('totalInterest')) {
+                document.getElementById('totalInterest').innerText = "$" + Math.round(total - P).toLocaleString('en-AU');
+                document.getElementById('totalPayable').innerText = "$" + Math.round(total).toLocaleString('en-AU');
+            }
+        }
+    }
+
+    [pInput, rInput, tInput, fInput].forEach(el => {
+        el.addEventListener('input', update);
+        el.addEventListener('change', update);
+    });
+
+    update(); // İlk açılışta çalıştır
+}
+
+// Tinker şablonunun JQuery yüklemesinden sonra çalışması için
+$(document).ready(function() {
+    runTheKapitalCalc();
+});
 
 });
