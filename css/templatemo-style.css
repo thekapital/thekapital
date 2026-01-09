@@ -79,6 +79,23 @@ https://templatemo.com/tm-506-tinker
     font-weight: 600;
     border: 1px solid #C5A059;
 }
+.calc-disclaimer {
+    margin-top: 20px;
+    padding: 15px;
+    border-top: 1px dashed rgba(10, 25, 47, 0.2);
+}
+
+.calc-disclaimer p {
+    font-size: 11px !important; /* Küçük ama yasal olarak geçerli punto */
+    line-height: 1.5;
+    color: #555 !important;
+    text-align: justify;
+    margin-bottom: 0;
+}
+
+.calc-disclaimer strong {
+    color: #0A192F;
+}
 
 body {
 	overflow-x: hidden;
