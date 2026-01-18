@@ -233,7 +233,7 @@
                         <ul class="tabs clearfix" data-tabgroup="first-tab-group">
                             <li><a href="#tab1" class="active">Mortgage Repayment</a></li>
                             <li><a href="#tab2">Stamp Duty (NSW)</a></li>
-                            <li><a href="#tab3">Investment Growth</a></li>
+                            <li><a href="#tab3">Time Value of Money</a></li>
                             <li><a href="#tab4">Borrowing Capacity</a></li>
                         </ul>
                     </div>
@@ -288,12 +288,104 @@
                             </div>
                         </div>
                         
-                        <div id="tab2">
-                             <div class="text-content">
-                                <h4>Coming Soon: Stamp Duty Calculator</h4>
-                                <p>We are integrating the latest NSW Revenue data to provide precise stamp duty estimates for your next acquisition.</p>
-                             </div>
-                        </div>
+<div id="tab2">
+    <div class="kapital-calc-container">
+        <h4>NSW Stamp Duty Calculator</h4>
+        <div class="calc-row">
+            <div class="calc-input-group">
+                <label>Property Value ($)</label>
+                <input type="number" id="propertyValue" value="950000" step="10000">
+            </div>
+            <div class="calc-input-group">
+                <label>Buyer Type</label>
+                <select id="buyerType">
+                    <option value="standard">Standard Resident</option>
+                    <option value="firstHome">First Home Buyer (NSW)</option>
+                    <option value="foreign">Foreign Resident</option>
+                </select>
+            </div>
+        </div>
+        <div class="calc-result-box" style="background: #C5A059;">
+            <span class="res-title">Estimated Transfer Duty</span>
+            <h2 id="displayDuty">$0</h2>
+            <div class="res-details">
+                <span id="fhbasNote" style="font-style: italic; font-size: 11px;">*Standard NSW residential rates apply.</span>
+            </div>
+            <div class="primary-blue-button">
+                <a href="#contact" class="scroll-link" data-id="contact-us">Ask About Concessions</a>
+            </div>
+            
+            <div class="calc-disclaimer">
+                <p>* <strong>Disclaimer:</strong> This calculator provides an estimate of the Transfer Duty (Stamp Duty) payable in NSW based on the 2026 indexed rates. It does not include other potential costs such as mortgage registration or transfer fees. This information is for general illustrative purposes only and does not constitute financial or legal advice. We recommend verifying final figures with <strong>Revenue NSW</strong> or consulting with <strong>The Kapital</strong> before proceeding with any property acquisition.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="tab4">
+    <div class="kapital-calc-container">
+        <h4 style="color: #C5A059 !important; font-family: 'Playfair Display', serif;">Borrowing Power Estimator</h4>
+        
+        <div class="calc-row">
+            <div class="calc-input-group">
+                <label>Annual Gross Income ($)</label>
+                <input type="text" id="grossIncome" class="format-input" value="120,000">
+            </div>
+            <div class="calc-input-group">
+                <label>Other Annual Income ($)</label>
+                <input type="text" id="otherIncome" class="format-input" value="0">
+            </div>
+        </div>
+
+        <div class="calc-row">
+            <div class="calc-input-group">
+                <label>Monthly Living Expenses ($)</label>
+                <input type="text" id="monthlyExpenses" class="format-input" value="2,500">
+            </div>
+            <div class="calc-input-group">
+                <label>Other Monthly Debts ($)</label>
+                <input type="text" id="monthlyDebts" class="format-input" value="0">
+            </div>
+        </div>
+
+        <div class="calc-row">
+            <div class="calc-input-group">
+                <label>Dependents</label>
+                <select id="dependents" style="background-color: #ffffff !important; color: #0A192F !important; font-weight:600;">
+                    <option value="0">0 Dependents</option>
+                    <option value="1">1 Dependent</option>
+                    <option value="2">2 Dependents</option>
+                    <option value="3">3+ Dependents</option>
+                </select>
+            </div>
+            <div class="calc-input-group">
+                <label>Assessment Rate (% p.a.)</label>
+                <input type="number" id="bcRate" value="6.14" step="0.01" style="background-color: #ffffff !important; color: #0A192F !important; font-weight:600;">
+            </div>
+        </div>
+
+        <div class="calc-result-box" style="background: #C5A059; border: 2px solid #0A192F; border-radius: 8px; padding: 25px; text-align: center; margin-top: 20px;">
+            <span class="res-title" style="color: #0A192F; font-weight: 700; text-transform: uppercase; font-size: 13px; letter-spacing: 1px;">Estimated Borrowing Capacity</span>
+            <h2 id="displayCapacity" style="color: #0A192F; font-family: 'Playfair Display', serif; font-size: 48px; margin: 15px 0; font-weight: 700;">$0</h2>
+            
+            <div class="res-details" style="border-top: 1px solid rgba(10, 25, 47, 0.2); padding-top: 15px;">
+                <p style="color: #0A192F; font-size: 12px; font-weight: 500; margin-bottom: 0;">
+                    *Includes +3% APRA Serviceability Buffer
+                </p>
+            </div>
+            
+            <div class="primary-blue-button" style="margin-top: 20px;">
+                <a href="#contact-us" class="scroll-link" data-id="contact-us" style="background: #0A192F; color: #C5A059; border-radius: 20px; padding: 12px 30px; text-decoration: none; display: inline-block; font-weight: 600;">Get Pre-Approved</a>
+            </div>
+        </div>
+
+        <div class="calc-disclaimer" style="margin-top: 20px; border-top: 1px dashed rgba(197, 160, 89, 0.3); padding-top: 15px;">
+            <p style="font-size: 10px; color: #8892b0; text-align: justify; line-height: 1.4;">
+                * <strong>Disclaimer:</strong> This is an estimate based on standard lending criteria. Actual borrowing power depends on credit score, lender policies (HEM), and individual circumstances. Consult <strong>The Kapital</strong> for a formal assessment.
+            </p>
+        </div>
+    </div>
+</div>
                         </section>
                 </div>
             </div>
