@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Free Financial Calculators – Mortgage, Stamp Duty & Borrowing | The Kapital Sydney</title>
-  <meta name="description" content="Use The Kapital's free financial calculators to estimate mortgage repayments, NSW stamp duty costs and borrowing capacity. Expert tools for Sydney home buyers.">
-  <meta name="keywords" content="mortgage calculator, stamp duty calculator NSW, borrowing capacity calculator, home loan calculator Sydney, property calculator Australia">
+  <title>Free Financial Calculators – Mortgage, Stamp Duty, Borrowing & Guarantor | The Kapital Sydney</title>
+  <meta name="description" content="Use The Kapital's free calculators to estimate mortgage repayments, NSW stamp duty, borrowing capacity and guarantor loan equity. Expert tools for Sydney home buyers.">
+  <meta name="keywords" content="mortgage calculator, stamp duty calculator NSW, borrowing capacity calculator, guarantor loan calculator, home loan calculator Sydney">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="canonical" href="https://thekapital.com.au/calculators.html">
   <link rel="icon" type="image/x-icon" href="img/favicon.ico">
@@ -23,56 +23,10 @@
     {"@type":"Question","name":"How accurate are these calculators?","acceptedAnswer":{"@type":"Answer","text":"Our calculators provide close estimates based on current market data and standard lending criteria. Actual figures depend on individual circumstances, credit history and lender policies."}},
     {"@type":"Question","name":"What interest rate should I use?","acceptedAnswer":{"@type":"Answer","text":"We default to current average variable rates. You can adjust the rate to model fixed-rate scenarios or compare different lender offers."}},
     {"@type":"Question","name":"Am I eligible for the NSW First Home Buyer exemption?","acceptedAnswer":{"@type":"Answer","text":"If purchasing your first home in NSW for $800,000 or less, you may be fully exempt from stamp duty. Properties between $800k-$1m receive a partial concession."}},
-    {"@type":"Question","name":"What is the APRA serviceability buffer?","acceptedAnswer":{"@type":"Answer","text":"APRA requires lenders to assess repayment ability at an interest rate at least 3% above the loan's actual rate, ensuring borrowers can handle potential rate increases."}}
+    {"@type":"Question","name":"What is the APRA serviceability buffer?","acceptedAnswer":{"@type":"Answer","text":"APRA requires lenders to assess repayment ability at an interest rate at least 3% above the loan's actual rate, ensuring borrowers can handle potential rate increases."}},
+    {"@type":"Question","name":"Can I avoid LMI without a 20% deposit?","acceptedAnswer":{"@type":"Answer","text":"Yes. A guarantor home loan allows family members to pledge equity as security, eliminating Lenders Mortgage Insurance even with as little as 5% cash deposit."}}
   ]}
   </script>
-
-  <style>
-    /* ── HUB-ONLY STYLES ── */
-    .hub-hero {
-      background: linear-gradient(135deg, #0d2140 0%, var(--navy) 60%, #061220 100%);
-      padding: 100px 20px 80px; text-align: center;
-      position: relative; overflow: hidden;
-    }
-    .hub-hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 70% 50%,rgba(197,160,89,0.08) 0%,transparent 70%); pointer-events:none; }
-    .hub-hero .eyebrow { font-size:11px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:18px; position:relative; }
-    .hub-hero h1 { font-family:var(--ff-display); font-size:clamp(32px,5vw,52px); line-height:1.2; margin-bottom:20px; position:relative; }
-    .hub-hero h1 em { color:var(--gold); font-style:normal; }
-    .hub-hero>div>p { max-width:600px; margin:0 auto; font-size:15px; font-weight:300; color:rgba(255,255,255,0.7); line-height:1.8; position:relative; }
-    .breadcrumb { font-size:11px; letter-spacing:1px; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:24px; position:relative; }
-    .breadcrumb a { color:var(--gold); text-decoration:none; }
-    .breadcrumb a:hover { color:var(--gold-lt); }
-
-    .hub-section { padding:70px 20px 90px; }
-    .hub-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:28px; margin-top:50px; }
-    .hub-card {
-      background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:14px;
-      padding:36px 30px; text-decoration:none; color:inherit; display:flex; flex-direction:column;
-      transition:border-color .25s,transform .25s,box-shadow .25s;
-    }
-    .hub-card:hover { border-color:var(--gold); transform:translateY(-6px); box-shadow:0 12px 40px rgba(197,160,89,0.12); }
-    .hub-card .icon { font-size:36px; margin-bottom:18px; }
-    .hub-card .tag { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
-    .hub-card h2 { font-family:var(--ff-display); font-size:22px; color:var(--white); margin-bottom:12px; }
-    .hub-card h2 em { color:var(--gold); font-style:normal; }
-    .hub-card p { font-size:14px; color:rgba(255,255,255,0.6); line-height:1.8; flex:1; margin-bottom:22px; }
-    .hub-card .features { list-style:none; margin-bottom:24px; }
-    .hub-card .features li { font-size:12px; color:rgba(255,255,255,0.55); padding:6px 0; display:flex; align-items:center; gap:8px; }
-    .hub-card .features li::before { content:'✓'; color:var(--gold); font-weight:700; font-size:11px; }
-    .hub-card .cta { font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); }
-    .hub-card:hover .cta { color:var(--gold-lt); }
-
-    .faq-section { padding:60px 20px 80px; background:rgba(255,255,255,0.02); border-top:1px solid var(--border); }
-    .faq-section .section-heading { text-align:center; max-width:560px; margin:0 auto 40px; }
-    .faq-section .section-heading h2 { font-family:var(--ff-display); font-size:clamp(24px,3vw,34px); }
-    .faq-section .section-heading h2 em { color:var(--gold); font-style:normal; }
-    .faq-list { max-width:740px; margin:0 auto; }
-    .faq-item { border-bottom:1px solid var(--border); padding:22px 0; }
-    .faq-item h3 { font-family:var(--ff-display); font-size:17px; color:var(--gold); margin-bottom:10px; }
-    .faq-item p { font-size:14px; font-weight:300; color:rgba(255,255,255,0.65); line-height:1.8; }
-    .faq-item a { color:var(--gold); text-decoration:none; }
-    .faq-item a:hover { color:var(--gold-lt); }
-  </style>
 </head>
 <body>
 <script src="navbar.js"></script>
@@ -90,11 +44,12 @@
 <section class="hub-section">
   <div class="container">
     <div class="hub-grid">
+
       <a class="hub-card" href="mortgage-repayment-calculator.html">
         <div class="icon">🏡</div>
         <div class="tag">Calculator 01</div>
         <h2>Mortgage <em>Repayment</em> Calculator</h2>
-        <p>Calculate exactly what your home loan will cost each period. Model different scenarios by adjusting loan amount, interest rate, term and repayment frequency.</p>
+        <p>Calculate exactly what your home loan will cost each period. Model different scenarios by adjusting loan amount, interest rate, term and frequency.</p>
         <ul class="features">
           <li>Monthly, fortnightly & weekly options</li>
           <li>Total interest payable over loan life</li>
@@ -103,11 +58,12 @@
         </ul>
         <span class="cta">Open Calculator →</span>
       </a>
+
       <a class="hub-card" href="stamp-duty-calculator-nsw.html">
         <div class="icon">📋</div>
         <div class="tag">Calculator 02</div>
         <h2>NSW Stamp <em>Duty</em> Calculator</h2>
-        <p>Estimate your Transfer Duty liability including First Home Buyer exemptions, partial concessions and the 8% foreign resident surcharge based on 2026 NSW rates.</p>
+        <p>Estimate Transfer Duty including First Home Buyer exemptions, partial concessions and the 8% foreign resident surcharge based on 2026 NSW rates.</p>
         <ul class="features">
           <li>2026 indexed NSW rates</li>
           <li>First Home Buyer concessions</li>
@@ -116,11 +72,12 @@
         </ul>
         <span class="cta">Open Calculator →</span>
       </a>
+
       <a class="hub-card" href="borrowing-capacity-calculator.html">
         <div class="icon">💼</div>
         <div class="tag">Calculator 03</div>
         <h2>Borrowing <em>Capacity</em> Calculator</h2>
-        <p>Understand your maximum borrowing power before you start property hunting. Accounts for income, living expenses, existing debts and APRA's mandatory 3% buffer rate.</p>
+        <p>Understand your maximum borrowing power before property hunting. Accounts for income, expenses, debts and APRA's mandatory 3% buffer rate.</p>
         <ul class="features">
           <li>Includes +3% APRA buffer</li>
           <li>Accounts for dependents & HEM</li>
@@ -129,6 +86,22 @@
         </ul>
         <span class="cta">Open Calculator →</span>
       </a>
+
+      <a class="hub-card" href="guarantor-loan-calculator.html">
+        <span class="new-badge">New</span>
+        <div class="icon">👨‍👩‍👧</div>
+        <div class="tag">Calculator 04</div>
+        <h2>Guarantor <em>Loan</em> Calculator</h2>
+        <p>Estimate how much equity a family member may need to pledge to support your home loan. Includes LMI savings and NSW First Home Buyer concession.</p>
+        <ul class="features">
+          <li>Indicative guarantee amount</li>
+          <li>Estimated LMI you may avoid</li>
+          <li>Total upfront cost estimate</li>
+          <li>NSW FHB concession included</li>
+        </ul>
+        <span class="cta">Open Calculator →</span>
+      </a>
+
     </div>
   </div>
 </section>
@@ -155,6 +128,10 @@
       <div class="faq-item">
         <h3>What is the APRA serviceability buffer?</h3>
         <p>APRA requires lenders to assess your ability to repay at an interest rate at least 3% above the loan's actual rate. This buffer is factored into our <a href="borrowing-capacity-calculator.html">Borrowing Capacity Calculator</a> to give you a realistic estimate of what lenders will approve.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can I avoid LMI without a 20% deposit?</h3>
+        <p>Yes. A guarantor home loan allows a family member to pledge equity as security, eliminating Lenders Mortgage Insurance even with as little as 5% cash deposit. Use our <a href="guarantor-loan-calculator.html">Guarantor Loan Calculator</a> to see how much equity is required.</p>
       </div>
       <div class="faq-item">
         <h3>Can I use these tools on my phone?</h3>
