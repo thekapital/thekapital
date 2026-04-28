@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>NSW Stamp Duty Calculator 2026 – Transfer Duty Estimator | The Kapital Sydney</title>
-  <meta name="description" content="Calculate NSW stamp duty (Transfer Duty) for 2026 instantly. Includes First Home Buyer exemptions, partial concessions and 8% foreign resident surcharge. Free tool by The Kapital.">
-  <meta name="keywords" content="stamp duty calculator NSW, transfer duty calculator, NSW stamp duty 2026, first home buyer stamp duty exemption, stamp duty Sydney">
+  <meta name="description" content="Calculate NSW stamp duty (Transfer Duty) for 2026 instantly. Includes First Home Buyer Assistance Scheme, FHOG, foreign surcharge and government fees. Free tool by The Kapital.">
+  <meta name="keywords" content="stamp duty calculator NSW, transfer duty calculator, NSW stamp duty 2026, FHBAS calculator, first home buyer stamp duty, stamp duty Sydney, foreign buyer surcharge NSW">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="canonical" href="https://thekapital.com.au/stamp-duty-calculator-nsw.html">
   <link rel="icon" type="image/x-icon" href="img/favicon.ico">
@@ -32,7 +32,7 @@
     <p class="eyebrow">Calculator 02</p>
     <h1>NSW Stamp <em>Duty</em> Calculator</h1>
     <div class="line-dec"></div>
-    <p>Estimate your Transfer Duty payable in New South Wales based on 2026 indexed rates. Includes First Home Buyer concessions and foreign resident surcharges.</p>
+    <p>Estimate your Transfer Duty payable in New South Wales using the official 2025–26 Revenue NSW rates. Includes First Home Buyer concessions, FHOG, foreign surcharge and government fees.</p>
   </div>
 </section>
 
@@ -40,85 +40,381 @@
   <div class="container">
     <div class="calc-grid">
       <div class="section-intro">
-        <h2>What Will You Pay<br>in <em>Transfer Duty?</em></h2>
+        <h2>Total Cost of <em>Buying</em> in NSW</h2>
         <div class="line-dec"></div>
-        <p>Transfer Duty (Stamp Duty) can be one of the largest upfront costs in a property purchase. Use this calculator to estimate your liability and understand available concessions before you commit.</p>
+        <p>Stamp duty is one of the largest upfront costs of buying a property — but it's not the only one. This calculator gives you a complete picture: transfer duty, the FHBAS concession, the First Home Owner Grant, foreign surcharge, and the government fees most calculators forget.</p>
         <ul class="feature-list">
-          <li>2026 indexed NSW rates</li>
-          <li>First Home Buyer concessions included</li>
-          <li>Foreign resident surcharge (8%)</li>
-          <li>Instant estimate, no sign-up required</li>
+          <li>Official 2025–26 Revenue NSW rates</li>
+          <li>FHBAS (First Home Buyer Assistance Scheme)</li>
+          <li>$10,000 First Home Owner Grant for new builds</li>
+          <li>9% Foreign Surcharge Purchaser Duty</li>
+          <li>Mortgage registration & land transfer fees</li>
+          <li>Premium duty for properties over $3.721M</li>
         </ul>
-        <a href="index.html#contact-us" class="btn-kapital primary">Ask About Concessions</a>
+        <a href="index.html#contact-us" class="btn-kapital primary">Speak to a Specialist</a>
       </div>
 
       <div class="calc-card">
         <h3>NSW Stamp Duty Calculator</h3>
-        <div class="calc-row">
-          <div class="form-group">
-            <label>Property Value ($)</label>
-            <input type="number" id="sd-value" value="950000" min="0" step="10000">
+
+        <div class="form-group" style="margin-bottom:18px;">
+          <label>Property Value ($)</label>
+          <input type="number" id="sd-value" value="950000" min="0" step="10000">
+        </div>
+
+        <div class="form-group" style="margin-bottom:18px;">
+          <label>Property Type</label>
+          <select id="sd-property">
+            <option value="established">Established Home</option>
+            <option value="new">New Home / Newly Built</option>
+            <option value="land">Vacant Land (to build on)</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom:18px;">
+          <label>Buyer Status</label>
+          <select id="sd-buyer">
+            <option value="ownerOcc">Owner-Occupier (not first home)</option>
+            <option value="firstHome">First Home Buyer</option>
+            <option value="investor">Property Investor</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Are you a Foreign Resident?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="sd-foreign" value="no" checked><span>No</span></label>
+            <label><input type="radio" name="sd-foreign" value="yes"><span>Yes (+9%)</span></label>
           </div>
-          <div class="form-group">
-            <label>Buyer Type</label>
-            <select id="sd-type">
-              <option value="standard">Standard Resident</option>
-              <option value="firstHome">First Home Buyer (NSW)</option>
-              <option value="foreign">Foreign Resident</option>
-            </select>
-          </div>
         </div>
-        <div id="sd-fhb-note" class="sample-calc" style="display:none; padding:14px 18px; margin:0 0 16px;">
-          <strong style="color:var(--gold);">First Home Buyer:</strong> Properties up to $800k are fully exempt. $800k–$1m receive a partial concession. Above $1m, standard rates apply.
+
+        <!-- Eligibility note (dynamic) -->
+        <div id="sd-eligibility" class="sample-calc" style="display:none; margin-top:20px;">
+          <div class="tag">Eligibility Note</div>
+          <p id="sd-eligibility-text"></p>
         </div>
-        <div class="result-box">
-          <div class="res-label">Estimated Transfer Duty</div>
-          <div class="res-value" id="sd-duty">$0</div>
-          <div class="res-breakdown">
-            <span id="sd-note">*Standard NSW residential rates apply.</span>
-          </div>
-          <a href="index.html#contact-us" class="btn-kapital">Ask About Concessions</a>
-        </div>
-        <div class="disclaimer">
-          * <strong>Disclaimer:</strong> This calculator provides an estimate of Transfer Duty payable in NSW based on 2026 indexed rates. It does not include mortgage registration or transfer fees. Verify final figures with <strong>Revenue NSW</strong> or consult <strong>The Kapital</strong> before proceeding.
-        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ HEADLINE RESULT ═══════════════ -->
+    <div class="result-box" style="max-width:600px; margin:30px auto 0;">
+      <div class="res-label">Total Stamp Duty Payable</div>
+      <div class="res-value" id="sd-total">$0</div>
+      <div class="res-breakdown">
+        <span id="sd-summary-note" style="font-style:italic; font-size:11px;">Standard NSW rates applied.</span>
+      </div>
+      <a href="index.html#contact-us" class="btn-kapital">Speak to a Specialist</a>
+    </div>
+
+    <!-- ═══════════════ WATERFALL CHART ═══════════════ -->
+    <div class="waterfall-chart">
+      <div class="chart-title">Cost Breakdown</div>
+      <div class="chart-subtitle">How your total upfront cost is built up, step by step.</div>
+
+      <div class="wf-row" id="wf-row-standard">
+        <div class="wf-label">Standard Duty</div>
+        <div class="wf-bar-wrap"><div class="wf-bar add" id="wf-bar-standard"></div></div>
+        <div class="wf-value" id="wf-val-standard">$0</div>
+      </div>
+
+      <div class="wf-row" id="wf-row-concession">
+        <div class="wf-label">FHB Concession</div>
+        <div class="wf-bar-wrap"><div class="wf-bar subtract" id="wf-bar-concession"></div></div>
+        <div class="wf-value minus" id="wf-val-concession">−$0</div>
+      </div>
+
+      <div class="wf-row" id="wf-row-foreign">
+        <div class="wf-label">Foreign Surcharge</div>
+        <div class="wf-bar-wrap"><div class="wf-bar surcharge" id="wf-bar-foreign"></div></div>
+        <div class="wf-value plus-warn" id="wf-val-foreign">+$0</div>
+      </div>
+
+      <div class="wf-row" id="wf-row-fees">
+        <div class="wf-label">Government Fees</div>
+        <div class="wf-bar-wrap"><div class="wf-bar fees" id="wf-bar-fees"></div></div>
+        <div class="wf-value muted" id="wf-val-fees">+$351</div>
+      </div>
+
+      <div class="wf-row wf-total">
+        <div class="wf-label">Total Payable</div>
+        <div class="wf-bar-wrap"><div class="wf-bar total" id="wf-bar-total"></div></div>
+        <div class="wf-value" id="wf-val-total">$0</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ DETAILED COST BREAKDOWN ═══════════════ -->
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">Standard Transfer Duty</div>
+        <div class="metric-value" id="sd-standard" style="font-size:26px;">$0</div>
+        <div class="metric-desc" id="sd-standard-desc">Base NSW transfer duty before any concessions or surcharges.</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">FHB Concession Saving</div>
+        <div class="metric-value" id="sd-concession" style="font-size:26px; color:#7dd482;">−$0</div>
+        <div class="metric-desc" id="sd-concession-desc">First Home Buyer Assistance Scheme savings (if eligible).</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">Foreign Surcharge (9%)</div>
+        <div class="metric-value" id="sd-foreign" style="font-size:26px;">$0</div>
+        <div class="metric-desc">Additional surcharge purchaser duty for foreign residents (from 1 Jan 2025).</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">Government Fees</div>
+        <div class="metric-value" style="font-size:26px;">$351</div>
+        <div class="metric-desc">Mortgage registration ($175.70) + land transfer fee ($175.70).</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ FHOG GRANT (conditional) ═══════════════ -->
+    <div id="sd-fhog-card" style="display:none;">
+      <div class="metric-card featured" style="margin-top:18px;">
+        <div class="metric-label">First Home Owner Grant</div>
+        <div class="metric-value" style="font-size:30px;">+$10,000</div>
+        <div class="metric-desc" id="sd-fhog-desc">$10,000 grant for eligible first home buyers purchasing a new home valued up to $600,000 (or land + construction up to $750,000).</div>
+      </div>
+    </div>
+
+    <div class="results-disclaimer">
+      Estimates are based on official Revenue NSW 2025–26 rates and the First Home Buyer Assistance Scheme. Final figures may vary slightly due to "or part thereof" rounding rules in the Duties Act and individual eligibility requirements. Always verify final amounts with Revenue NSW or your conveyancer before settlement.
+    </div>
+
+    <div class="soft-cta">
+      <h3>Need help with the <em>full</em> picture?</h3>
+      <p>The Kapital can walk you through stamp duty, lender fees, LMI and ongoing repayments — so there are no surprises at settlement.</p>
+      <a href="index.html#contact-us" class="btn-kapital">Speak to a Specialist →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ NSW RATE TABLE ═══════════════ -->
+<section class="content-section">
+  <div class="container">
+    <h2>NSW Stamp Duty Rates <em>2025–26</em></h2>
+    <p class="lead">Stamp duty — officially called Transfer Duty — is a state government tax payable when you purchase property in New South Wales. NSW uses a progressive bracket system where the rate increases with property value. The rates below are the official Revenue NSW figures effective 1 July 2025 to 30 June 2026.</p>
+
+    <div class="rate-table-wrap">
+      <table class="rate-table">
+        <thead>
+          <tr><th>Property Value</th><th>Rate of Duty</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>$0 – $17,000</td><td>$1.25 per $100</td></tr>
+          <tr><td>$17,001 – $37,000</td><td>$212 + $1.50 per $100 over $17,000</td></tr>
+          <tr><td>$37,001 – $99,000</td><td>$512 + $1.75 per $100 over $37,000</td></tr>
+          <tr><td>$99,001 – $372,000</td><td>$1,597 + $3.50 per $100 over $99,000</td></tr>
+          <tr><td>$372,001 – $1,240,000</td><td>$11,152 + $4.50 per $100 over $372,000</td></tr>
+          <tr><td>$1,240,001 – $3,721,000</td><td>$50,212 + $5.50 per $100 over $1,240,000</td></tr>
+          <tr><td>Over $3,721,000 (Premium)</td><td>$186,667 + $7.00 per $100 over $3,721,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The premium threshold is adjusted annually based on the Sydney Consumer Price Index (CPI). Premium duty applies only to the residential portion of properties above the threshold.</p>
+  </div>
+</section>
+
+<!-- ═══════════════ FHBAS ═══════════════ -->
+<section class="content-section">
+  <div class="container">
+    <h2>First Home Buyer Assistance <em>Scheme</em> (FHBAS)</h2>
+    <p>The FHBAS provides significant stamp duty relief for eligible first home buyers in NSW. Benefits depend on the type of property and its value.</p>
+
+    <h3>For New or Existing Homes</h3>
+    <ul class="consider-list">
+      <li>
+        <strong>Up to $800,000 — Full exemption</strong>
+        No stamp duty payable on the property purchase.
+      </li>
+      <li>
+        <strong>$800,001 to $999,999 — Concessional rate</strong>
+        A graduated concession applies on a sliding scale, reducing as the property value approaches $1M.
+      </li>
+      <li>
+        <strong>$1,000,000 and above — No concession</strong>
+        Standard transfer duty rates apply in full.
+      </li>
+    </ul>
+
+    <h3>For Vacant Land</h3>
+    <ul class="consider-list">
+      <li>
+        <strong>Up to $350,000 — Full exemption</strong>
+        No stamp duty payable when buying vacant land to build your first home.
+      </li>
+      <li>
+        <strong>$350,001 to $449,999 — Concessional rate</strong>
+        Graduated concession on a sliding scale up to $450,000.
+      </li>
+      <li>
+        <strong>$450,000 and above — No concession</strong>
+        Standard rates apply.
+      </li>
+    </ul>
+
+    <h3>Eligibility Requirements</h3>
+    <p>To qualify for FHBAS, you must:</p>
+    <ul class="consider-list">
+      <li>
+        <strong>Be a first home buyer</strong>
+        Neither you nor your spouse can have previously owned residential property anywhere in Australia (or, in some cases, anywhere in the world).
+      </li>
+      <li>
+        <strong>Be at least 18 years of age</strong>
+        At least one purchaser must meet the age requirement.
+      </li>
+      <li>
+        <strong>Move in within 12 months</strong>
+        You must occupy the property as your principal place of residence within 12 months of settlement.
+      </li>
+      <li>
+        <strong>Live there for at least 12 months continuously</strong>
+        You must occupy the property continuously for at least 12 months.
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════ FHOG ═══════════════ -->
+<section class="content-section">
+  <div class="container">
+    <h2>First Home Owner Grant <em>(FHOG)</em></h2>
+    <p>In addition to FHBAS stamp duty relief, eligible first home buyers can receive a $10,000 cash grant when purchasing a new home — but the grant only applies to specific property types.</p>
+
+    <h3>FHOG Eligibility</h3>
+    <ul class="consider-list">
+      <li>
+        <strong>Newly built homes up to $600,000</strong>
+        Brand new homes that have never been previously occupied or sold as a place of residence.
+      </li>
+      <li>
+        <strong>Land + construction packages up to $750,000</strong>
+        The combined value of vacant land plus the building contract must not exceed $750,000.
+      </li>
+      <li>
+        <strong>Existing homes are NOT eligible</strong>
+        FHOG only applies to new construction. Established homes do not qualify.
+      </li>
+    </ul>
+
+    <p>The FHOG can be combined with FHBAS, and applications are typically processed through your lender at settlement.</p>
+  </div>
+</section>
+
+<!-- ═══════════════ FOREIGN BUYERS ═══════════════ -->
+<section class="content-section">
+  <div class="container">
+    <h2>Foreign Buyer <em>Surcharge</em></h2>
+    <p>Buyers who are not Australian citizens or permanent residents must pay an additional surcharge on top of standard transfer duty when purchasing residential property in NSW.</p>
+
+    <h3>Surcharge Purchaser Duty</h3>
+    <p>From 1 January 2025, the foreign buyer surcharge increased from 8% to <strong>9%</strong> of the property's dutiable value. This is paid in addition to the standard transfer duty — not instead of it.</p>
+
+    <div class="sample-calc">
+      <div class="tag">Worked Example</div>
+      <p><strong>$950,000 home purchased by a foreign resident:</strong></p>
+      <p>
+        Standard transfer duty: <strong>~$37,162</strong><br>
+        Foreign surcharge (9%): <strong>$85,500</strong><br>
+        Government fees: <strong>$351.40</strong><br>
+        <strong>Total upfront cost: ~$123,013</strong>
+      </p>
+      <p>This is in addition to the property purchase price itself.</p>
+    </div>
+
+    <h3>Annual Land Tax Surcharge</h3>
+    <p>Foreign owners also face a recurring 4% per annum land tax surcharge on the taxable value of residential land in NSW — payable each year while you own the property. Some temporary residents and buyers from countries with specific tax treaties may be exempt. Always verify your status with Revenue NSW or a tax adviser.</p>
+  </div>
+</section>
+
+<!-- ═══════════════ INVESTORS ═══════════════ -->
+<section class="content-section">
+  <div class="container">
+    <h2>Stamp Duty for <em>Investors</em></h2>
+    <p>Property investors do not qualify for any stamp duty concessions or exemptions in NSW. Standard transfer duty rates apply in full, payable upfront before settlement. There are also no off-the-plan deferral options available to investors — those concessions are reserved for owner-occupiers intending to live in the property.</p>
+
+    <p>Investors should also factor in ongoing land tax obligations. If your total taxable land holdings in NSW exceed the land tax threshold, you'll pay land tax annually. Land tax becomes increasingly significant as you build a portfolio of investment properties.</p>
+
+    <p>For a complete view of your investment costs, use our <a href="mortgage-repayment-calculator.html">Mortgage Repayment Calculator</a> to model the loan and our <a href="borrowing-capacity-calculator.html">Borrowing Capacity Calculator</a> to understand how much you can borrow.</p>
+  </div>
+</section>
+
+<!-- ═══════════════ OTHER FEES ═══════════════ -->
+<section class="content-section">
+  <div class="container">
+    <h2>Other Government <em>Fees</em></h2>
+    <p>Beyond stamp duty, NSW property purchases attract several smaller government fees that calculators often overlook. They're not large individually but they do need to be budgeted for.</p>
+
+    <ul class="consider-list">
+      <li>
+        <strong>Mortgage Registration Fee — $175.70</strong>
+        Paid to register the lender's mortgage on the title.
+      </li>
+      <li>
+        <strong>Land Transfer Fee — $175.70</strong>
+        Paid to register the transfer of property ownership to your name.
+      </li>
+      <li>
+        <strong>Legal / Conveyancing Fees — $1,500–$3,000+</strong>
+        Solicitor or conveyancer fees for handling the purchase. Not a government fee, but always required.
+      </li>
+      <li>
+        <strong>Building & Pest Inspection — $400–$800</strong>
+        Strongly recommended, particularly for established homes.
+      </li>
+      <li>
+        <strong>Strata / Title Search Fees — $100–$400</strong>
+        Strata report for apartments; title searches for all property types.
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════ FAQ ═══════════════ -->
+<section class="content-section">
+  <div class="container">
+    <h2>Frequently Asked <em>Questions</em></h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <h3>How much is stamp duty on a $1 million home in NSW?</h3>
+        <p>For a non-first home buyer purchasing a $1,000,000 property, stamp duty is approximately $40,402. For a first home buyer, the FHBAS concession applies on a sliding scale between $800,000 and $1,000,000 — at exactly $1M, the concession reaches zero. Use the calculator above for your exact scenario.</p>
+      </div>
+      <div class="faq-item">
+        <h3>How much is stamp duty on a $1.2 million home in NSW?</h3>
+        <p>For a non-first home buyer purchasing a $1,200,000 property, stamp duty is approximately $48,412. First home buyers receive no concession at this price (above the $1M threshold), so the same amount applies. Foreign buyers add a 9% surcharge of $108,000 on top.</p>
+      </div>
+      <div class="faq-item">
+        <h3>When is stamp duty payable in NSW?</h3>
+        <p>Stamp duty is payable within 3 months of signing the contract for sale, or at settlement if it occurs sooner. Settlement cannot proceed until stamp duty is paid. Off-the-plan owner-occupier purchasers may defer payment for up to 12 months from contract signing.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Do I pay stamp duty if I'm gifted a property?</h3>
+        <p>Generally yes — stamp duty is payable on the higher of the contract price or the property's market value, even if the property is being gifted or transferred at below-market price. The State Revenue Office will require a formal valuation. Exceptions apply for transfers of a principal place of residence between spouses or de facto partners.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Are there any stamp duty exemptions for pensioners or seniors in NSW?</h3>
+        <p>NSW does not currently offer specific concessions for pensioners or seniors purchasing residential property. The main exemptions in NSW are the FHBAS (for first home buyers), spousal transfers and deceased estate transfers. Some states like QLD and VIC offer pensioner concessions, but NSW does not.</p>
+      </div>
+      <div class="faq-item">
+        <h3>What is premium property duty?</h3>
+        <p>Premium property duty is an additional higher rate of $7 per $100 that applies to the portion of a residential property's value above $3,721,000 (for 2025–26). This threshold is adjusted annually based on the Sydney CPI. The premium rate applies to residential properties only and only to the value above the threshold.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can I claim stamp duty on my tax return?</h3>
+        <p>For investment properties, stamp duty is not immediately tax deductible but forms part of the property's cost base, which can reduce capital gains tax when you sell. For owner-occupied homes, stamp duty is not tax deductible. Always seek advice from a registered tax agent for your specific situation.</p>
+      </div>
+      <div class="faq-item">
+        <h3>How accurate is this calculator?</h3>
+        <p>The calculator uses the official 2025–26 Revenue NSW bracket rates and the FHBAS concession formula. Small variations of a few dollars may occur due to "or part thereof" rounding rules in the Duties Act 1997. Always verify your final amount with Revenue NSW or your conveyancer before settlement.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="content-section">
-  <div class="container">
-    <h2>Understanding NSW Stamp Duty in <em>2026</em></h2>
-    <p class="lead">Stamp duty — officially called Transfer Duty — is a state government tax payable when you purchase property in New South Wales. The amount depends on the purchase price, your buyer status and whether the property is residential, commercial or vacant land.</p>
-
-    <h3>2026 NSW Stamp Duty Rates</h3>
-    <p>NSW uses a progressive bracket system. Below are the current indexed rates used in this calculator:</p>
-    <div class="rate-table-wrap">
-      <table class="rate-table">
-        <thead><tr><th>Property Value</th><th>Rate</th></tr></thead>
-        <tbody>
-          <tr><td>$0 – $17,000</td><td>$1.40 per $100</td></tr>
-          <tr><td>$17,001 – $36,000</td><td>$238 + $3.50 per $100 over $17,000</td></tr>
-          <tr><td>$36,001 – $97,000</td><td>$903 + $4.50 per $100 over $36,000</td></tr>
-          <tr><td>$97,001 – $364,000</td><td>$3,648 + $4.75 per $100 over $97,000</td></tr>
-          <tr><td>$364,001 – $1,212,000</td><td>$16,330 + $5.00 per $100 over $364,000</td></tr>
-          <tr><td>Over $1,212,000</td><td>$58,730 + $5.50 per $100 over $1,212,000</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h3>First Home Buyer Concessions</h3>
-    <p>If you're a first home buyer purchasing a new or existing home in NSW, you may be eligible for significant stamp duty savings. Properties valued at $800,000 or less are fully exempt from transfer duty. Properties between $800,000 and $1,000,000 receive a graduated partial concession. Above $1,000,000, standard rates apply in full.</p>
-
-    <h3>Foreign Resident Surcharge</h3>
-    <p>Foreign purchasers (non-Australian citizens/permanent residents) are subject to an additional 8% surcharge on the property value, payable on top of the standard transfer duty amount.</p>
-
-    <h3>What Other Costs Should You Budget For?</h3>
-    <p>Beyond stamp duty, property buyers should budget for legal/conveyancing fees, building and pest inspections, mortgage registration fees and lenders mortgage insurance (if applicable). Use our <a href="mortgage-repayment-calculator.html">Mortgage Repayment Calculator</a> to estimate your ongoing loan costs, or check your <a href="borrowing-capacity-calculator.html">borrowing capacity</a> to understand your total budget.</p>
-  </div>
-</section>
-
+<!-- ═══════════════ CROSS-LINKS ═══════════════ -->
 <section class="cross-links">
   <div class="container">
     <div class="heading">
@@ -147,45 +443,253 @@
 
 <script src="footer.js"></script>
 
+<!-- ═══════════════════════════════════════ CALCULATOR LOGIC ══════════════════════════════════════ -->
 <script>
-function calcStampDuty() {
-  const val = parseFloat(document.getElementById('sd-value').value) || 0;
-  const type = document.getElementById('sd-type').value;
-  const noteEl = document.getElementById('sd-note');
-  const fhbNote = document.getElementById('sd-fhb-note');
-  fhbNote.style.display = type === 'firstHome' ? 'block' : 'none';
-
-  function standardDuty(v) {
-    if (v <= 17000)   return v * 0.014;
-    if (v <= 36000)   return 238 + (v-17000) * 0.035;
-    if (v <= 97000)   return 903 + (v-36000) * 0.045;
-    if (v <= 364000)  return 3648 + (v-97000) * 0.0475;
-    if (v <= 1212000) return 16330 + (v-364000) * 0.05;
-    return 58730 + (v-1212000) * 0.055;
-  }
-
-  let duty = 0;
-  let note = '*Standard NSW residential rates apply.';
-
-  if (type === 'standard') {
-    duty = standardDuty(val);
-  } else if (type === 'firstHome') {
-    if (val <= 800000) { duty = 0; note = '✓ Fully exempt — First Home Buyer under $800k threshold.'; }
-    else if (val <= 1000000) { const frac = (val-800000)/200000; duty = frac * standardDuty(val); note = '* Partial concession applied ($800k–$1m range).'; }
-    else { duty = standardDuty(val); note = '* Property above $1m — standard rates apply.'; }
-  } else if (type === 'foreign') {
-    duty = standardDuty(val) + val * 0.08;
-    note = '* Includes 8% foreign resident surcharge.';
-  }
-
-  const fmt = v => '$' + Math.round(v).toLocaleString('en-AU');
-  document.getElementById('sd-duty').textContent = fmt(duty);
-  noteEl.textContent = note;
+/* ──────────────────────────────────────
+   NSW Transfer Duty (Revenue NSW 2025-26)
+   Source: revenue.nsw.gov.au
+────────────────────────────────────── */
+function nswStandardDuty(v) {
+  if (v <= 0) return 0;
+  if (v <= 17000)    return v * 0.0125;
+  if (v <= 37000)    return 212 + (v - 17000) * 0.015;
+  if (v <= 99000)    return 512 + (v - 37000) * 0.0175;
+  if (v <= 372000)   return 1597 + (v - 99000) * 0.035;
+  if (v <= 1240000)  return 11152 + (v - 372000) * 0.045;
+  if (v <= 3721000)  return 50212 + (v - 1240000) * 0.055;
+  return 186667 + (v - 3721000) * 0.07;            // Premium duty
 }
-['sd-value','sd-type'].forEach(id => {
-  document.getElementById(id).addEventListener('input', calcStampDuty);
+
+/* ──────────────────────────────────────
+   FHBAS — First Home Buyer Assistance
+   - New/existing homes: full exemption ≤ $800k,
+     concession $800k–$1M (sliding), nothing ≥ $1M
+   - Vacant land: full exemption ≤ $350k,
+     concession $350k–$450k (sliding), nothing ≥ $450k
+────────────────────────────────────── */
+function fhbasDuty(v, propertyType) {
+  const standard = nswStandardDuty(v);
+
+  if (propertyType === 'land') {
+    if (v <= 350000) return 0;
+    if (v < 450000) {
+      const frac = (v - 350000) / 100000;
+      return frac * standard;
+    }
+    return standard;
+  } else {
+    // Established or new home
+    if (v <= 800000) return 0;
+    if (v < 1000000) {
+      const frac = (v - 800000) / 200000;
+      return frac * standard;
+    }
+    return standard;
+  }
+}
+
+/* ──────────────────────────────────────
+   FHOG eligibility — only for new builds / land+construction
+────────────────────────────────────── */
+function isFHOGEligible(propertyType, value) {
+  if (propertyType === 'new'  && value <= 600000) return true;
+  if (propertyType === 'land' && value <= 750000) return true;
+  return false;
+}
+
+/* ──────────────────────────────────────
+   Main calculation
+────────────────────────────────────── */
+function calc() {
+  const value         = parseFloat(document.getElementById('sd-value').value) || 0;
+  const propertyType  = document.getElementById('sd-property').value;     // established | new | land
+  const buyerStatus   = document.getElementById('sd-buyer').value;        // ownerOcc | firstHome | investor
+  const isForeign     = document.querySelector('input[name="sd-foreign"]:checked').value === 'yes';
+
+  /* Standard duty */
+  const standardDuty = nswStandardDuty(value);
+
+  /* FHB concession */
+  let dutyPayable = standardDuty;
+  let concession  = 0;
+  let summaryNote = 'Standard NSW residential rates applied.';
+
+  if (buyerStatus === 'firstHome' && !isForeign) {
+    const fhbDuty = fhbasDuty(value, propertyType);
+    concession    = standardDuty - fhbDuty;
+    dutyPayable   = fhbDuty;
+
+    if (concession > 0 && fhbDuty === 0) {
+      summaryNote = '✓ Fully exempt under FHBAS.';
+    } else if (concession > 0) {
+      summaryNote = '✓ FHBAS concession applied (partial).';
+    } else {
+      summaryNote = 'Above FHBAS threshold — standard rates apply.';
+    }
+  } else if (buyerStatus === 'investor') {
+    summaryNote = 'Investor — no concessions available.';
+  }
+
+  /* Foreign surcharge — 9% (from 1 Jan 2025) */
+  const foreignSurcharge = isForeign ? value * 0.09 : 0;
+  if (isForeign) {
+    summaryNote = 'Includes 9% foreign surcharge purchaser duty.';
+  }
+
+  /* Government fees */
+  const govFees = 175.70 + 175.70;
+
+  /* Total */
+  const total = dutyPayable + foreignSurcharge + govFees;
+
+  /* FHOG (separate — it's a grant TO the buyer, not duty) */
+  const fhogEligible = (buyerStatus === 'firstHome' && !isForeign && isFHOGEligible(propertyType, value));
+
+  /* ─── Render ─── */
+  const fmt = v => '$' + Math.round(v).toLocaleString('en-AU');
+
+  document.getElementById('sd-total').textContent     = fmt(total);
+  document.getElementById('sd-summary-note').textContent = summaryNote;
+  document.getElementById('sd-standard').textContent  = fmt(standardDuty);
+  document.getElementById('sd-concession').textContent= '−' + fmt(concession);
+  document.getElementById('sd-foreign').textContent   = fmt(foreignSurcharge);
+
+  /* Standard duty desc updated */
+  let stdDesc = 'Base NSW transfer duty before any concessions or surcharges.';
+  if (value > 3721000) {
+    stdDesc = 'Includes premium duty for value above $3.721M (7% on the excess).';
+  }
+  document.getElementById('sd-standard-desc').textContent = stdDesc;
+
+  /* Concession desc */
+  let concDesc;
+  if (buyerStatus !== 'firstHome') {
+    concDesc = 'Not applicable — only first home buyers qualify for FHBAS.';
+  } else if (isForeign) {
+    concDesc = 'Foreign buyers do not qualify for FHBAS.';
+  } else if (concession === 0) {
+    concDesc = 'Property value above the FHBAS threshold — no concession applies.';
+  } else if (dutyPayable === 0) {
+    concDesc = 'Fully exempt — first home buyer under threshold.';
+  } else {
+    concDesc = 'Partial concession applied (sliding scale).';
+  }
+  document.getElementById('sd-concession-desc').textContent = concDesc;
+
+  /* FHOG card */
+  document.getElementById('sd-fhog-card').style.display = fhogEligible ? 'block' : 'none';
+
+  /* Eligibility note (in calc card) */
+  const eligEl     = document.getElementById('sd-eligibility');
+  const eligTextEl = document.getElementById('sd-eligibility-text');
+  if (buyerStatus === 'firstHome' && !isForeign) {
+    eligEl.style.display = 'block';
+    if (propertyType === 'land') {
+      if (value <= 350000) {
+        eligTextEl.textContent = 'You may be fully exempt from stamp duty (vacant land under $350k FHBAS threshold).';
+      } else if (value < 450000) {
+        eligTextEl.textContent = 'You may receive a partial FHBAS concession on vacant land ($350k–$450k range).';
+      } else {
+        eligTextEl.textContent = 'Vacant land above $450k — no FHBAS concession applies.';
+      }
+    } else {
+      if (value <= 800000) {
+        eligTextEl.textContent = 'You may be fully exempt from stamp duty (under $800k FHBAS threshold).';
+      } else if (value < 1000000) {
+        eligTextEl.textContent = 'You may receive a partial FHBAS concession ($800k–$1M sliding scale).';
+      } else {
+        eligTextEl.textContent = 'Above $1M — no FHBAS concession applies, standard rates in full.';
+      }
+    }
+    if (fhogEligible) {
+      eligTextEl.textContent += ' You may also qualify for the $10,000 First Home Owner Grant.';
+    }
+  } else if (isForeign) {
+    eligEl.style.display = 'block';
+    eligTextEl.textContent = 'As a foreign resident, you must pay standard duty plus the 9% Foreign Surcharge Purchaser Duty. No FHBAS concession is available.';
+  } else if (buyerStatus === 'investor') {
+    eligEl.style.display = 'block';
+    eligTextEl.textContent = 'Investment properties do not qualify for FHBAS, FHOG or any other stamp duty concession in NSW.';
+  } else {
+    eligEl.style.display = 'none';
+  }
+
+  /* ─── Waterfall render ─── */
+  renderWaterfall({
+    standard:   standardDuty,
+    concession: concession,
+    foreign:    foreignSurcharge,
+    fees:       govFees,
+    total:      total
+  });
+}
+
+/* ──────────────────────────────────────
+   Waterfall chart renderer
+   - Each bar's WIDTH is scaled to the max (total)
+   - Each bar's LEFT offset shows its position in the running total,
+     so additions extend rightward and the concession bar sits where
+     it's "deducted" from
+────────────────────────────────────── */
+function renderWaterfall(d) {
+  const max = Math.max(d.standard + d.foreign + d.fees, d.total, 1);
+  const fmt = v => '$' + Math.round(v).toLocaleString('en-AU');
+
+  /* Helpers */
+  const setBar = (id, leftPct, widthPct) => {
+    const el = document.getElementById(id);
+    el.style.left  = leftPct  + '%';
+    el.style.width = Math.max(widthPct, 0.5) + '%';
+  };
+  const setRowZero = (rowId, isZero) => {
+    document.getElementById(rowId).classList.toggle('is-zero', isZero);
+  };
+
+  /* Standard duty — starts from 0 */
+  const standardW = (d.standard / max) * 100;
+  setBar('wf-bar-standard', 0, standardW);
+  document.getElementById('wf-val-standard').textContent = fmt(d.standard);
+  setRowZero('wf-row-standard', d.standard === 0);
+
+  /* Concession — overlay on top, sitting at the right edge of standard,
+     extending leftward (visual "subtraction") */
+  const concessionW = (d.concession / max) * 100;
+  const concessionLeft = standardW - concessionW;
+  setBar('wf-bar-concession', Math.max(concessionLeft, 0), concessionW);
+  document.getElementById('wf-val-concession').textContent = '−' + fmt(d.concession);
+  setRowZero('wf-row-concession', d.concession === 0);
+
+  /* Running total after concession */
+  const afterConcession = d.standard - d.concession;
+  const afterConcessionW = (afterConcession / max) * 100;
+
+  /* Foreign surcharge — added on top of (afterConcession) */
+  const foreignW = (d.foreign / max) * 100;
+  setBar('wf-bar-foreign', afterConcessionW, foreignW);
+  document.getElementById('wf-val-foreign').textContent = '+' + fmt(d.foreign);
+  setRowZero('wf-row-foreign', d.foreign === 0);
+
+  /* Gov fees — small, added at the very end */
+  const afterForeign  = afterConcession + d.foreign;
+  const afterForeignW = (afterForeign / max) * 100;
+  const feesW = (d.fees / max) * 100;
+  setBar('wf-bar-fees', afterForeignW, feesW);
+  document.getElementById('wf-val-fees').textContent = '+' + fmt(d.fees);
+
+  /* Total — full bar showing final amount */
+  const totalW = (d.total / max) * 100;
+  setBar('wf-bar-total', 0, totalW);
+  document.getElementById('wf-val-total').textContent = fmt(d.total);
+}
+
+/* ── Wire inputs ── */
+['sd-value','sd-property','sd-buyer'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calc);
 });
-calcStampDuty();
+document.querySelectorAll('input[name="sd-foreign"]').forEach(r => {
+  r.addEventListener('change', calc);
+});
+calc();
 </script>
 </body>
 </html>

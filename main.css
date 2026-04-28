@@ -1369,6 +1369,110 @@ footer .container { max-width: 1140px; margin: 0 auto; }
 
 
 /* ─────────────────────────────────────────
+   22b. WATERFALL CHART  (cost breakdown visualisation)
+───────────────────────────────────────── */
+.waterfall-chart {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px 28px;
+  margin-top: 24px;
+}
+.waterfall-chart .chart-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.waterfall-chart .chart-subtitle {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 24px;
+}
+
+.wf-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 110px;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 0;
+}
+.wf-row .wf-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  font-weight: 600;
+}
+.wf-row .wf-bar-wrap {
+  position: relative;
+  height: 28px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.wf-row .wf-bar {
+  position: absolute;
+  top: 0; bottom: 0;
+  border-radius: 4px;
+  transition: left .5s ease, width .5s ease, background .3s ease;
+}
+.wf-row .wf-bar.add        { background: linear-gradient(90deg, rgba(197,160,89,0.85), var(--gold)); }
+.wf-row .wf-bar.subtract   { background: linear-gradient(90deg, rgba(125,212,130,0.7), #7dd482); }
+.wf-row .wf-bar.surcharge  { background: linear-gradient(90deg, rgba(239,125,114,0.7), #ef7d72); }
+.wf-row .wf-bar.fees       { background: linear-gradient(90deg, rgba(136,146,176,0.6), var(--muted)); }
+.wf-row .wf-bar.total      { background: var(--gold); }
+.wf-row .wf-value {
+  font-family: var(--ff-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  text-align: right;
+}
+.wf-row .wf-value.minus    { color: #7dd482; }
+.wf-row .wf-value.plus-warn{ color: #ef7d72; }
+.wf-row .wf-value.muted    { color: var(--muted); }
+
+/* Total row — visually distinguished */
+.wf-row.wf-total {
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+  padding-top: 16px;
+}
+.wf-row.wf-total .wf-label {
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.wf-row.wf-total .wf-bar-wrap { height: 36px; }
+.wf-row.wf-total .wf-value {
+  font-size: 18px;
+  color: var(--gold);
+}
+
+/* Zero / N/A row dimming */
+.wf-row.is-zero .wf-label  { opacity: 0.45; }
+.wf-row.is-zero .wf-value  { opacity: 0.45; }
+.wf-row.is-zero .wf-bar    { opacity: 0.25; }
+
+/* Mobile: stack label above bar */
+@media (max-width: 600px) {
+  .wf-row {
+    grid-template-columns: 1fr 90px;
+    grid-template-areas:
+      "label value"
+      "bar   bar";
+    row-gap: 6px;
+  }
+  .wf-row .wf-label    { grid-area: label; }
+  .wf-row .wf-value    { grid-area: value; }
+  .wf-row .wf-bar-wrap { grid-area: bar; }
+}
+
+
+/* ─────────────────────────────────────────
    23. RESPONSIVE
 ───────────────────────────────────────── */
 @media (max-width: 768px) {
