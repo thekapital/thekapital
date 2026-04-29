@@ -85,7 +85,7 @@
       <div class="calc-card">
         <h3>Guarantor Loan Calculator</h3>
 
-        <div class="form-group" style="margin-bottom:20px;">
+        <div class="form-group">
           <label>Property Purchase Price</label>
           <div class="slider-input-group">
             <input type="range" id="g-price-slider" min="400000" max="3000000" step="10000" value="1200000">
@@ -93,7 +93,7 @@
           </div>
         </div>
 
-        <div class="form-group" style="margin-bottom:20px;">
+        <div class="form-group">
           <label>Cash Deposit</label>
           <div class="slider-input-group">
             <input type="range" id="g-deposit-slider" min="0" max="300000" step="5000" value="50000">
@@ -101,7 +101,7 @@
           </div>
         </div>
 
-        <div class="form-group" style="margin-bottom:20px;">
+        <div class="form-group">
           <label>Property Type</label>
           <div class="radio-group">
             <label><input type="radio" name="g-purpose" value="owner" checked><span>Owner-Occupier</span></label>
@@ -109,7 +109,7 @@
           </div>
         </div>
 
-        <div class="form-group" style="margin-bottom:20px;">
+        <div class="form-group">
           <label>Guarantor's Property Value</label>
           <div class="slider-input-group">
             <input type="range" id="g-gprop-slider" min="500000" max="3000000" step="10000" value="1200000">
@@ -117,7 +117,7 @@
           </div>
         </div>
 
-        <div class="form-group" style="margin-bottom:20px;">
+        <div class="form-group">
           <label>Guarantor's Outstanding Mortgage</label>
           <div class="slider-input-group">
             <input type="range" id="g-gmort-slider" min="0" max="1500000" step="10000" value="300000">
@@ -157,9 +157,61 @@
 
       <div class="metric-card">
         <div class="metric-label">When Could the Guarantee Be Released?</div>
-        <div class="metric-value" id="g-result-release" style="font-size:24px;">5–8 years</div>
+        <div class="metric-value metric-value--text" id="g-result-release">5–8 years</div>
         <div class="metric-desc">A guarantee is typically released when the loan reaches around 80% LVR. Depending on repayments and property value changes, this is generally in the range of 5–8 years. Highly variable.</div>
       </div>
+    </div>
+
+    <!-- ═══ CHARTS ═══ -->
+    <div class="g-charts-wrap">
+
+      <!-- Chart 1: Loan Structure -->
+      <div class="g-chart-card">
+        <div class="g-chart-header">
+          <span class="g-chart-title">Property Funding Breakdown</span>
+          <span class="g-chart-sub" id="g-chart-price-lbl"></span>
+        </div>
+        <div class="g-stacked-bar">
+          <div class="g-seg g-seg-deposit" id="g-seg-deposit">
+            <span class="g-seg-label" id="g-lbl-deposit"></span>
+          </div>
+          <div class="g-seg g-seg-guarantee" id="g-seg-guarantee">
+            <span class="g-seg-label" id="g-lbl-guarantee"></span>
+          </div>
+          <div class="g-seg g-seg-loan" id="g-seg-loan">
+            <span class="g-seg-label" id="g-lbl-loan"></span>
+          </div>
+        </div>
+        <div class="g-bar-legend">
+          <span><span class="g-dot deposit"></span>Cash Deposit</span>
+          <span><span class="g-dot guarantee"></span>Guarantee</span>
+          <span><span class="g-dot loan"></span>Remaining Loan</span>
+        </div>
+        <div class="g-pct-row">
+          <span id="g-pct-deposit"></span>
+          <span id="g-pct-guarantee"></span>
+          <span id="g-pct-loan"></span>
+        </div>
+      </div>
+
+      <!-- Chart 2: Guarantor Equity -->
+      <div class="g-chart-card">
+        <div class="g-chart-header">
+          <span class="g-chart-title">Guarantor Equity Check</span>
+          <span class="g-chart-sub" id="g-equity-status"></span>
+        </div>
+        <div class="g-equity-track">
+          <div class="g-equity-fill" id="g-equity-fill">
+            <span class="g-equity-fill-lbl" id="g-equity-fill-lbl"></span>
+          </div>
+        </div>
+        <div class="g-equity-legend">
+          <span id="g-equity-needed-lbl">Guarantee needed: —</span>
+          <span id="g-equity-avail-lbl">Usable equity: —</span>
+        </div>
+        <div class="g-equity-formula" id="g-equity-formula"></div>
+      </div>
+
     </div>
 
     <div class="results-disclaimer">
@@ -457,40 +509,58 @@ syncPair('g-deposit-slider','g-deposit');
 syncPair('g-gprop-slider',  'g-gprop');
 syncPair('g-gmort-slider',  'g-gmort');
 
-document.querySelectorAll('input[name="g-purpose"], input[name="g-fhb"]').forEach(r => {
-  r.addEventListener('change', calc);
-});
+/* When price changes, keep deposit slider max sensible (25% of price) */
+function updateDepositRange() {
+  const price = parseFloat(document.getElementById('g-price').value) || 0;
+  const depSlider = document.getElementById('g-deposit-slider');
+  const newMax = Math.max(Math.round(price * 0.25 / 5000) * 5000, 300000);
+  depSlider.max = newMax;
+  const dep = parseFloat(document.getElementById('g-deposit').value) || 0;
+  if (dep > price) {
+    document.getElementById('g-deposit').value = price;
+    document.getElementById('g-deposit-slider').value = Math.min(price, newMax);
+  }
+}
+['g-price-slider', 'g-price'].forEach(id =>
+  document.getElementById(id).addEventListener('input', updateDepositRange)
+);
+
+document.querySelectorAll('input[name="g-purpose"], input[name="g-fhb"]').forEach(r =>
+  r.addEventListener('change', calc)
+);
 
 const fmt = v => '$' + Math.round(v).toLocaleString('en-AU');
+const fmtPct = v => v.toFixed(1) + '%';
 
+/* Revenue NSW 2025–26 residential transfer duty rates — same as stamp-duty-calculator-nsw.html */
 function nswStampDuty(v) {
-  if (v <= 17000)   return v * 0.014;
-  if (v <= 36000)   return 238 + (v-17000) * 0.035;
-  if (v <= 97000)   return 903 + (v-36000) * 0.045;
-  if (v <= 364000)  return 3648 + (v-97000) * 0.0475;
-  if (v <= 1212000) return 16330 + (v-364000) * 0.05;
-  return 58730 + (v-1212000) * 0.055;
+  if (v <= 0)       return 0;
+  if (v <= 17000)   return v * 0.0125;
+  if (v <= 37000)   return 212  + (v - 17000)  * 0.015;
+  if (v <= 99000)   return 512  + (v - 37000)  * 0.0175;
+  if (v <= 372000)  return 1597 + (v - 99000)  * 0.035;
+  if (v <= 1240000) return 11152 + (v - 372000) * 0.045;
+  if (v <= 3721000) return 50212 + (v - 1240000)* 0.055;
+  return 186667 + (v - 3721000) * 0.07;
 }
 
+/* NSW First Home Buyer Assistance Scheme — owner-occupier only, new/established homes */
 function fhbDuty(v) {
   if (v <= 800000) return 0;
-  if (v <= 1000000) {
-    const frac = (v - 800000) / 200000;
-    return frac * nswStampDuty(v);
-  }
+  if (v < 1000000) return ((v - 800000) / 200000) * nswStampDuty(v);
   return nswStampDuty(v);
 }
 
 function estimateLMI(loanAmount, lvr) {
   if (lvr <= 0.80) return 0;
-  let pct = 0.005;
-  if (lvr > 0.82) pct = 0.012;
-  if (lvr > 0.85) pct = 0.020;
-  if (lvr > 0.88) pct = 0.028;
-  if (lvr > 0.90) pct = 0.035;
-  if (lvr > 0.92) pct = 0.042;
-  if (lvr > 0.95) pct = 0.048;
-  return loanAmount * pct;
+  let p = 0.005;
+  if (lvr > 0.82) p = 0.012;
+  if (lvr > 0.85) p = 0.020;
+  if (lvr > 0.88) p = 0.028;
+  if (lvr > 0.90) p = 0.035;
+  if (lvr > 0.92) p = 0.042;
+  if (lvr > 0.95) p = 0.048;
+  return loanAmount * p;
 }
 
 function calc() {
@@ -508,39 +578,28 @@ function calc() {
   const lmi             = estimateLMI(loanAmount, loanLvr);
   const stampDuty       = isFHB && !isInvestment ? fhbDuty(price) : nswStampDuty(price);
   const upfrontCost     = deposit + stampDuty;
+  const usableEquity    = Math.max(gPropValue * 0.80 - gMortgage, 0);
+  const pctOfHome       = gPropValue > 0   ? (guaranteeNeeded / gPropValue) * 100 : 0;
+  const pctOfEquity     = usableEquity > 0 ? (guaranteeNeeded / usableEquity) * 100 : null;
 
-  /* Guarantor capacity context (shown under the headline figure) */
-  const usableEquity = Math.max(gPropValue * 0.80 - gMortgage, 0);
-  const pctOfHome    = gPropValue > 0   ? (guaranteeNeeded / gPropValue) * 100   : 0;
-  const pctOfEquity  = usableEquity > 0 ? (guaranteeNeeded / usableEquity) * 100 : null;
-
+  /* ── Metric cards ── */
   let amountDesc;
   if (guaranteeNeeded === 0) {
     amountDesc = 'Your cash deposit already meets the equivalent of a 20% deposit — no guarantee may be required.';
   } else if (usableEquity <= 0) {
-    amountDesc = 'Equity a family member may need to pledge. Based on the figures entered, the guarantor may not have enough usable equity to cover this. Indicative figure only.';
+    amountDesc = 'Equity a family member may need to pledge. Based on the figures entered, the guarantor may not have enough usable equity. Indicative figure only.';
   } else if (guaranteeNeeded > usableEquity) {
-    amountDesc = 'Equity a family member may need to pledge — this represents about ' + pctOfHome.toFixed(0) + '% of the guarantor\'s property value. Based on the figures entered, the required guarantee exceeds the guarantor\'s usable equity. Indicative figure only.';
+    amountDesc = 'Equity a family member may need to pledge — about ' + pctOfHome.toFixed(0) + '% of the guarantor\'s property value. Required guarantee exceeds their usable equity. Indicative figure only.';
   } else {
-    amountDesc = 'Equity a family member may need to pledge — this represents about ' + pctOfHome.toFixed(0) + '% of the guarantor\'s property value, or about ' + pctOfEquity.toFixed(0) + '% of their usable equity. Indicative figure only.';
+    amountDesc = 'Equity a family member may need to pledge — about ' + pctOfHome.toFixed(0) + '% of the guarantor\'s property value, or about ' + pctOfEquity.toFixed(0) + '% of their usable equity. Indicative figure only.';
   }
 
-  /* Dynamic release-range hint.
-     We don't predict an exact year — we show a range that shifts based on
-     starting LVR. Higher starting LVR (smaller deposit) → range moves toward
-     the upper bound. Lower starting LVR → range moves toward the lower bound. */
   let releaseLabel = '5–8 years';
-  if (loanAmount === 0 || loanLvr <= 0.80) {
-    releaseLabel = 'N/A';
-  } else if (loanLvr >= 0.95) {
-    releaseLabel = '7–10 years';
-  } else if (loanLvr >= 0.90) {
-    releaseLabel = '6–9 years';
-  } else if (loanLvr >= 0.85) {
-    releaseLabel = '5–8 years';
-  } else {
-    releaseLabel = '3–6 years';
-  }
+  if (loanAmount === 0 || loanLvr <= 0.80) releaseLabel = 'N/A';
+  else if (loanLvr >= 0.95) releaseLabel = '7–10 years';
+  else if (loanLvr >= 0.90) releaseLabel = '6–9 years';
+  else if (loanLvr >= 0.85) releaseLabel = '5–8 years';
+  else releaseLabel = '3–6 years';
 
   document.getElementById('g-result-amount').textContent      = fmt(guaranteeNeeded);
   document.getElementById('g-result-amount-desc').textContent = amountDesc;
@@ -548,10 +607,60 @@ function calc() {
   document.getElementById('g-result-upfront').textContent     = fmt(upfrontCost);
   document.getElementById('g-result-release').textContent     = releaseLabel;
 
-  const stampLabel = stampDuty === 0
-    ? 'Cash deposit only — stamp duty fully exempt under NSW First Home Buyer concession. Additional purchase costs (legal, conveyancing, inspections) typically range from $2,000–$5,000.'
-    : 'Cash deposit (' + fmt(deposit) + ') plus stamp duty (' + fmt(stampDuty) + '). Additional purchase costs (legal, conveyancing, inspections) typically range from $2,000–$5,000.';
+  let stampLabel;
+  if (stampDuty === 0) {
+    stampLabel = 'Cash deposit only — stamp duty fully exempt under the NSW First Home Buyer Assistance Scheme (FHBAS). Additional purchase costs (legal, conveyancing, inspections) typically $2,000–$5,000.';
+  } else if (isFHB && !isInvestment && price > 800000 && price < 1000000) {
+    stampLabel = 'Cash deposit (' + fmt(deposit) + ') + stamp duty (' + fmt(stampDuty) + ') — partial FHBAS concession applied (sliding scale $800k–$1M). Additional purchase costs typically $2,000–$5,000.';
+  } else if (isFHB && !isInvestment && price >= 1000000) {
+    stampLabel = 'Cash deposit (' + fmt(deposit) + ') + stamp duty (' + fmt(stampDuty) + '). Note: FHBAS concession does not apply above $1,000,000 — full duty applies regardless of buyer status. Additional purchase costs typically $2,000–$5,000.';
+  } else if (isInvestment) {
+    stampLabel = 'Cash deposit (' + fmt(deposit) + ') + stamp duty (' + fmt(stampDuty) + '). Investment purchases are not eligible for the FHBAS concession. Additional purchase costs typically $2,000–$5,000.';
+  } else {
+    stampLabel = 'Cash deposit (' + fmt(deposit) + ') + stamp duty (' + fmt(stampDuty) + '). Additional purchase costs (legal, conveyancing, inspections) typically $2,000–$5,000.';
+  }
   document.getElementById('g-result-upfront-desc').textContent = stampLabel;
+
+  /* ── Chart 1: Stacked bar ── */
+  const depositPct    = price > 0 ? (deposit / price * 100) : 0;
+  const guarPct       = price > 0 ? (guaranteeNeeded / price * 100) : 0;
+  const loanPct       = Math.max(0, 100 - depositPct - guarPct);
+  const loanRemainder = Math.max(loanAmount - guaranteeNeeded, 0);
+
+  document.getElementById('g-chart-price-lbl').textContent   = fmt(price) + ' purchase';
+  document.getElementById('g-seg-deposit').style.width       = depositPct.toFixed(2) + '%';
+  document.getElementById('g-seg-guarantee').style.width     = guarPct.toFixed(2) + '%';
+  document.getElementById('g-lbl-deposit').textContent       = depositPct  >= 8  ? fmt(deposit) : '';
+  document.getElementById('g-lbl-guarantee').textContent     = guarPct     >= 8  ? fmt(guaranteeNeeded) : '';
+  document.getElementById('g-lbl-loan').textContent          = loanPct     >= 10 ? fmt(loanRemainder) : '';
+  document.getElementById('g-pct-deposit').textContent       = fmtPct(depositPct);
+  document.getElementById('g-pct-guarantee').textContent     = fmtPct(guarPct);
+  document.getElementById('g-pct-loan').textContent          = fmtPct(loanPct);
+
+  /* ── Chart 2: Guarantor equity gauge ── */
+  const isOver    = guaranteeNeeded > usableEquity && guaranteeNeeded > 0;
+  const equityPct = usableEquity > 0
+    ? Math.min((guaranteeNeeded / usableEquity) * 100, 100)
+    : (guaranteeNeeded > 0 ? 100 : 0);
+  const fillEl = document.getElementById('g-equity-fill');
+  fillEl.style.width = equityPct.toFixed(1) + '%';
+  fillEl.classList.toggle('over', isOver);
+  document.getElementById('g-equity-fill-lbl').textContent   = guaranteeNeeded > 0 ? fmt(guaranteeNeeded) : '';
+  document.getElementById('g-equity-needed-lbl').textContent = 'Guarantee needed: ' + fmt(guaranteeNeeded);
+  document.getElementById('g-equity-avail-lbl').textContent  = 'Usable equity: ' + fmt(usableEquity);
+  document.getElementById('g-equity-formula').textContent    =
+    '80% × ' + fmt(gPropValue) + ' − ' + fmt(gMortgage) + ' = ' + fmt(usableEquity);
+
+  const statusEl = document.getElementById('g-equity-status');
+  if (guaranteeNeeded === 0) {
+    statusEl.innerHTML = '<span class="g-ok">No guarantee needed</span>';
+  } else if (usableEquity <= 0) {
+    statusEl.innerHTML = '<span class="g-warn">Insufficient equity</span>';
+  } else if (isOver) {
+    statusEl.innerHTML = '<span class="g-warn">May be insufficient</span>';
+  } else {
+    statusEl.innerHTML = '<span class="g-ok">Equity sufficient ✓</span>';
+  }
 }
 
 calc();
